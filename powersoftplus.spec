@@ -32,12 +32,13 @@ UPS firmy EVER Sp. z o.o. o oznaczeniu DPC.
 %configure \
 	--bindir=%{_sbindir}
 
+sed -i -e 's#CONFIG_PATH.*#CONFIG_PATH	"%{_sysconfig}"#g' config.h
+
 %{__make} \
 	CC="%{__cc}" \
 	CXX="%{__cxx}" \
 	DEBUG="%{rpmcflags} -I/usr/include/ncurses" \
 	PIXPATH="%{_datadir}/%{name}" \
-	CONFIG_PATH="%{_sysconfdir}"
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -47,10 +48,12 @@ rm -rf $RPM_BUILD_ROOT
 	PIXPATH=$RPM_BUILD_ROOT%{_datadir}/%{name} \
 	DESTDIR=$RPM_BUILD_ROOT
 
-install -d $RPM_BUILD_ROOT{%{_sbindir},/var/run,%{_sysconfdir},/etc/{rc.d/init.d,sysconfig}}
+install -d $RPM_BUILD_ROOT{%{_sbindir},/var/{run,log},%{_sysconfdir},/etc/{rc.d/init.d,sysconfig}}
 
 install %{SOURCE1} $RPM_BUILD_ROOT/etc/rc.d/init.d/powersoftplus
 install %{SOURCE2} $RPM_BUILD_ROOT/etc/sysconfig/powersoftplus
+
+touch $RPM_BUILD_ROOT/var/log/powersoftplus.log
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -60,7 +63,7 @@ rm -rf $RPM_BUILD_ROOT
 if [ -f /var/lock/subsys/powersoftplus ]; then
 	/etc/rc.d/init.d/powersoftplus restart >&2
 else
-	echo "Run \"/etc/rc.d/init.d/powersoft start\" to start powersoft daemon." >&2
+	echo "Run \"/etc/rc.d/init.d/powersoftplus start\" to start powersoftplus daemon." >&2
 fi
 
 %preun
@@ -80,3 +83,4 @@ fi
 %{_datadir}/%{name}
 %attr(750,root,root) %dir %{_sysconfdir}
 %attr(640,root,root) %config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/*.*
+%attr(640,root,root) %ghost /var/log/powersoftplus.log
