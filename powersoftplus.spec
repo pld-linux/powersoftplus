@@ -16,7 +16,7 @@ Requires(post,preun):	/sbin/chkconfig
 Requires:	SysVinit
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
-%define		_sysconfdir	/etc/powersoft
+%define		_sysconfdir	/etc/%{name}
 
 %description
 This package contains some utilities for EVER UPS monitoring.
