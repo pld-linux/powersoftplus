@@ -39,6 +39,7 @@ case "$1" in
 		# show "Stopping %s service" powersoftplus
 		msg_stopping powersoftplus
 		killproc powersoftplus
+		ipcrm -S 0x78010096 > /dev/null 2>&1
 		rm -f /var/lock/subsys/powersoftplus /var/run/power.pid /var/run/powersoftplus.pid
 	else
 		# show "%s service is not running." powersoftplus
