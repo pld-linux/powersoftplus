@@ -11,6 +11,7 @@ Source1:	%{name}.init
 Source2:	%{name}.sysconfig
 URL:		http://www.ever.com.pl/powersoft_prod.php
 BuildRequires:	libstdc++-devel
+BuildRequires:	sed >= 4.0
 PreReq:		rc-scripts
 Requires(post,preun):	/sbin/chkconfig
 Requires:	SysVinit
