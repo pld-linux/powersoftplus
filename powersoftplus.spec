@@ -32,7 +32,7 @@ UPS firmy EVER Sp. z o.o. o oznaczeniu DPC.
 %configure \
 	--bindir=%{_sbindir}
 
-sed -i -e 's#CONFIG_PATH.*#CONFIG_PATH	"%{_sysconfig}"#g' config.h
+sed -i -e 's#CONFIG_PATH.*#CONFIG_PATH	"%{_sysconfdir}"#g' config.h
 
 %{__make} \
 	CC="%{__cc}" \
