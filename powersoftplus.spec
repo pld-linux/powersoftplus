@@ -36,7 +36,8 @@ UPS firmy EVER Sp. z o.o. o oznaczeniu DPC.
 	CC="%{__cc}" \
 	CXX="%{__cxx}" \
 	DEBUG="%{rpmcflags} -I/usr/include/ncurses" \
-	PIXPATH="%{_datadir}/%{name}"
+	PIXPATH="%{_datadir}/%{name}" \
+	CONFIG_PATH="%{_sysconfdir}"
 
 %install
 rm -rf $RPM_BUILD_ROOT
