@@ -1,0 +1,4 @@
+# Customized setings for powersoft
+
+# Nice level for powersoft
+#SERVICE_RUN_NICE_LEVEL="0"

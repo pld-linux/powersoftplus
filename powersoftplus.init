@@ -1,0 +1,66 @@
+#!/bin/sh
+#
+# powersoftplus	EVER UPS monitoring service
+#
+# chkconfig:	2345 90 20
+#
+# description:	powersoftplus monitors UPSs made by EVER Sp. z o.o.
+# processname:	powersoftplus
+# config:	/etc/powersoftplus/
+#
+# $Id$
+
+# Source function library
+. /etc/rc.d/init.d/functions
+
+# Get service config - may override defaults
+[ -f /etc/sysconfig/powersoftplus ] && . /etc/sysconfig/powersoftplus
+
+RETVAL=0
+# See how we were called.
+case "$1" in
+  start)
+	# Check if the service is already running?
+	if [ ! -f /var/lock/subsys/powersoftplus ]; then
+		rm -f /var/run/power.pid
+		# show "Starting %s service" powersoftplus
+		msg_starting powersoftplus
+		daemon powersoftplus
+		RETVAL=$?
+		[ $RETVAL -eq 0 ] && touch /var/lock/subsys/powersoftplus
+	else
+		# show "%s service is already running." powersoftplus
+		msg_already_running powersoftplus
+	fi
+	;;
+  stop)
+	if [ -f /var/lock/subsys/powersoftplus ]; then
+		# Stop daemons.
+		# show "Stopping %s service" powersoftplus
+		msg_stopping powersoftplus
+		killproc powersoftplus
+		rm -f /var/lock/subsys/powersoftplus /var/run/power.pid /var/run/powersoftplus.pid
+	else
+		# show "%s service is not running." powersoftplus
+		msg_not_running powersoftplus
+	fi	
+	;;
+  restart|force-reload)
+	$0 stop
+	$0 start
+	exit $?
+	;;
+  status)
+	status powersoftplus
+	exit $?
+	;;
+  *)
+	# show "Usage: %s {start|stop|restart|force-reload|status}"
+	msg_usage "$0 {start|stop|restart|force-reload|status}"
+	exit 3
+esac
+
+exit $RETVAL
+
+# This must be last line !
+# vi:syntax=sh:tw=78:ts=8:sw=4
