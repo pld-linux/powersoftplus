@@ -12,9 +12,9 @@ Source2:	%{name}.sysconfig
 URL:		http://www.ever.com.pl/powersoft_prod.php
 BuildRequires:	libstdc++-devel
 BuildRequires:	sed >= 4.0
-PreReq:		rc-scripts
 Requires(post,preun):	/sbin/chkconfig
 Requires:	SysVinit
+Requires:	rc-scripts
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		_sysconfdir	/etc/%{name}
@@ -80,8 +80,8 @@ fi
 %doc AUTHORS ChangeLog README TODO
 %attr(755,root,root) %{_sbindir}/*
 %attr(754,root,root) /etc/rc.d/init.d/powersoftplus
-%attr(640,root,root) /etc/sysconfig/powersoftplus
+%attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/sysconfig/powersoftplus
 %{_datadir}/%{name}
 %attr(750,root,root) %dir %{_sysconfdir}
-%attr(640,root,root) %config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/*.*
+%attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/*.*
 %attr(640,root,root) %ghost /var/log/powersoftplus.log
