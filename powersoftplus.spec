@@ -1,12 +1,12 @@
 Summary:	EVER UPS monitoring utilities
 Summary(pl):	Narzêdzia do monitorowania zasilaczy awaryjnych UPS firmy EVER
 Name:		powersoftplus
-Version:	0.1.3
-Release:	1
+Version:	0.1.5a
+Release:	0.1
 License:	GPL
 Group:		Daemons
-Source0:	%{name}-%{version}.tar.gz
-# Source0-md5:	37e700a1f6d918662b2a239570d06111
+Source0:	http://www.ever.com.pl/pl/pliki/%{name}-%{version}.tar.gz
+# Source0-md5:	7f5de7663e34e1f444ff9bf48fc1264b
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
 URL:		http://www.ever.com.pl/powersoft_prod.php
