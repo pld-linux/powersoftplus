@@ -1,5 +1,5 @@
 Summary:	EVER UPS monitoring utilities
-Summary(pl):	Narzêdzia do monitorowania zasilaczy awaryjnych UPS firmy EVER
+Summary(pl.UTF-8):   NarzÄ™dzia do monitorowania zasilaczy awaryjnych UPS firmy EVER
 Name:		powersoftplus
 Version:	0.1.5a
 Release:	0.1
@@ -22,8 +22,8 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 %description
 This package contains some utilities for EVER UPS monitoring.
 
-%description -l pl
-Ten zestaw programów s³u¿y do monitorowania pracy zasilaczy awaryjnych
+%description -l pl.UTF-8
+Ten zestaw programÃ³w sÅ‚uÅ¼y do monitorowania pracy zasilaczy awaryjnych
 UPS firmy EVER Sp. z o.o. o oznaczeniu DPC.
 
 %prep
