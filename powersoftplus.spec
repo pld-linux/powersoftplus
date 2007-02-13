@@ -1,5 +1,5 @@
 Summary:	EVER UPS monitoring utilities
-Summary(pl.UTF-8):   Narzędzia do monitorowania zasilaczy awaryjnych UPS firmy EVER
+Summary(pl.UTF-8):	Narzędzia do monitorowania zasilaczy awaryjnych UPS firmy EVER
 Name:		powersoftplus
 Version:	0.1.5a
 Release:	0.1
