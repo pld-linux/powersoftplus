@@ -1,12 +1,12 @@
 Summary:	EVER UPS monitoring utilities
 Summary(pl.UTF-8):	Narzędzia do monitorowania zasilaczy awaryjnych UPS firmy EVER
 Name:		powersoftplus
-Version:	0.1.5a
+Version:	0.1.8
 Release:	0.1
 License:	GPL
 Group:		Daemons
-Source0:	http://www.ever.com.pl/pl/pliki/%{name}-%{version}.tar.gz
-# Source0-md5:	7f5de7663e34e1f444ff9bf48fc1264b
+Source0:	http://www.ever.com.pl/pl/pliki/%{name}-%{version}-x86.tar.gz
+# Source0-md5:	e39d39335d7168f1fcf473471a50c35d
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
 URL:		http://www.ever.com.pl/powersoft_prod.php
@@ -31,15 +31,18 @@ UPS firmy EVER Sp. z o.o. o oznaczeniu DPC.
 
 %build
 %configure \
-	--bindir=%{_sbindir}
+	--bindir=%{_sbindir} \
+	--prefix=/usr
 
 sed -i -e 's#CONFIG_PATH.*#CONFIG_PATH	"%{_sysconfdir}"#g' config.h
+install -d $RPM_BUILD_ROOT%{_libdir}
 
 %{__make} \
 	CC="%{__cc}" \
 	CXX="%{__cxx}" \
 	DEBUG="%{rpmcflags} -I/usr/include/ncurses" \
 	PIXPATH="%{_datadir}/%{name}" \
+	LIBUPATH=%{_libdir}
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -47,7 +50,8 @@ rm -rf $RPM_BUILD_ROOT
 %{__make} install \
 	CONFPATH=$RPM_BUILD_ROOT%{_sysconfdir} \
 	PIXPATH=$RPM_BUILD_ROOT%{_datadir}/%{name} \
-	DESTDIR=$RPM_BUILD_ROOT
+	DESTDIR=$RPM_BUILD_ROOT \
+	LIBUPATH=$RPM_BUILD_ROOT%{_libdir}
 
 install -d $RPM_BUILD_ROOT{%{_sbindir},/var/{run,log},%{_sysconfdir},/etc/{rc.d/init.d,sysconfig}}
 
