@@ -1,3 +1,5 @@
+# TODO:
+# - netclient and psmain descriptions
 Summary:	EVER UPS monitoring utilities
 Summary(pl.UTF-8):	Narzędzia do monitorowania zasilaczy awaryjnych UPS firmy EVER
 Name:		powersoftplus
@@ -11,19 +13,20 @@ Source1:	%{name}.init
 Source2:	%{name}.sysconfig
 Patch0:		%{name}-make.patch
 URL:		http://www.ever.com.pl/powersoft_prod.php
+BuildRequires:	autoconf
+BuildRequires:	automake
 BuildRequires:	libstdc++-devel
 BuildRequires:	sed >= 4.0
 Requires(post,preun):	/sbin/chkconfig
 Requires:	SysVinit
 Requires:	rc-scripts
-BuildRequires:	autoconf
-BuildRequires:	automake
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		_sysconfdir	/etc/psplus
 
 %description
 This package contains some utilities for EVER UPS monitoring.
+
 Currently supported hardware:
  - NET 500-2200 DPC
  - NET 3000 DPC
@@ -38,7 +41,8 @@ Currently supported hardware:
 %description -l pl.UTF-8
 Ten zestaw programów służy do monitorowania pracy zasilaczy awaryjnych
 UPS firmy EVER Sp. z o.o..
-Aktualnie obslugiwane typy zasilaczy:
+
+Aktualnie obsługiwane typy zasilaczy:
  - NET 500-2200 DPC
  - NET 3000 DPC
  - ECO Pro
@@ -52,7 +56,7 @@ Aktualnie obslugiwane typy zasilaczy:
 %package netclient
 Summary:	netclient
 Group:		Daemons
-Requires:	%{name}
+Requires:	%{name} = %{version}-%{release}
 
 %description netclient
 netclient
@@ -60,7 +64,6 @@ netclient
 %package psmain
 Summary:	psmain
 Group:		X11/Applications
-Requires:	qt
 
 %description psmain
 psmain
@@ -153,10 +156,10 @@ fi
 %attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/*.*
 %attr(640,root,root) %ghost /var/log/powersoftplus.log
 
-%files psmain
-%defattr(644,root,root,755)
-%attr(755,root,root) %{_bindir}/psmain
-
 %files netclient
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_sbindir}/netclient
+
+%files psmain
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_bindir}/psmain
