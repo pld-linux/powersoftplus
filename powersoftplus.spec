@@ -1,5 +1,9 @@
 # TODO:
 # - netclient and psmain descriptions
+#
+# Conditional build:
+%bcond_without	qt		# build psmain client (qt-dependent)
+#
 Summary:	EVER UPS monitoring utilities
 Summary(pl.UTF-8):	Narzędzia do monitorowania zasilaczy awaryjnych UPS firmy EVER
 Name:		powersoftplus
@@ -16,6 +20,8 @@ URL:		http://www.ever.com.pl/powersoft_prod.php
 BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	libstdc++-devel
+%{?with_qt:BuildRequires:	qmake}
+%{?with_qt:BuildRequires:	qt-devel}
 BuildRequires:	sed >= 4.0
 Requires(post,preun):	/sbin/chkconfig
 Requires:	SysVinit
@@ -89,6 +95,15 @@ sed -i -e 's#CONFIG_PATH.*#CONFIG_PATH	"%{_sysconfdir}"#g' config.h
 	PIXPATH="%{_datadir}/%{name}" \
 	LIBUPATH=%{_libdir}
 
+%if %{with qt}
+cd psmain/src
+qmake
+%{__make} \
+	UIC=/usr/bin/uic \
+	MOC=/usr/bin/moc \
+	CXXFLAGS=-I/usr/include/qt/
+%endif
+
 %install
 rm -rf $RPM_BUILD_ROOT
 
@@ -116,11 +131,9 @@ touch $RPM_BUILD_ROOT/var/log/powersoftplus.log
 #mv $RPM_BUILD_ROOT/etc/powersoftplus $RPM_BUILD_ROOT/etc/psplus
 ln -sf %{_sbindir}/powersoftplus $RPM_BUILD_ROOT%{_bindir}/powersoftplus
 
-#
-# TODO:
-#  psmain should be compiled but isn't - sorry I have no time to fix this now, 
-#  so I just copy precompiled version
+%if %{with qt}
 cp psmain/bin/psmain $RPM_BUILD_ROOT%{_bindir}
+%endif
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -160,6 +173,8 @@ fi
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_sbindir}/netclient
 
+%if %{with qt}
 %files psmain
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/psmain
+%endif
