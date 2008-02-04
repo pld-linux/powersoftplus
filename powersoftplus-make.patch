@@ -1,0 +1,55 @@
+diff -Nur powersoftplus-0.1.8.orig/libftdi/Makefile.in powersoftplus-0.1.8.chng/libftdi/Makefile.in
+--- powersoftplus-0.1.8.orig/libftdi/Makefile.in	2006-11-22 14:34:03.000000000 +0100
++++ powersoftplus-0.1.8.chng/libftdi/Makefile.in	2008-02-04 09:59:59.000000000 +0100
+@@ -9,13 +9,8 @@
+ TABFILEDST = libd2xx_table.so
+ 
+ all:
+-	$(INSTALLCMD) -m 0644 $(LIBFILE) $(LIBUPATH)/$(LIBFILE)
+-	$(INSTALLCMD) -m 0644 $(TABFILESRC) $(LIBUPATH)/$(TABFILEDST)
+-	ln -s -f $(LIBUPATH)/$(LIBFILE) $(LIBUPATH)/$(LIBSFILE)
+-	ln -s -f $(LIBUPATH)/$(LIBFILE) $(LIBPATH)/$(LIBSFILE)
+-	ln -s -f $(LIBUPATH)/$(LIBFILE) $(LIBUPATH)/$(LIBS0FILE)
+-	ln -s -f $(LIBUPATH)/$(LIBFILE) $(LIBPATH)/$(LIBS0FILE)
+-	/sbin/ldconfig
++	ln -s -f $(LIBFILE) $(LIBSFILE)
++	ln -s -f $(LIBFILE) $(LIBS0FILE)
+ clean:
+ distclean:
+ 
+@@ -26,8 +21,6 @@
+ 	ln -s -f $(LIBUPATH)/$(LIBFILE) $(LIBPATH)/$(LIBSFILE)
+ 	ln -s -f $(LIBUPATH)/$(LIBFILE) $(LIBUPATH)/$(LIBS0FILE)
+ 	ln -s -f $(LIBUPATH)/$(LIBFILE) $(LIBPATH)/$(LIBS0FILE)
+-	/sbin/ldconfig
+-	./runacfg
+ 
+ uninstall:
+ 	rm -f $(LIBUPATH)/$(LIBFILE)
+diff -Nur powersoftplus-0.1.8.orig/scripts/Makefile.in powersoftplus-0.1.8.chng/scripts/Makefile.in
+--- powersoftplus-0.1.8.orig/scripts/Makefile.in	2006-11-22 14:50:23.000000000 +0100
++++ powersoftplus-0.1.8.chng/scripts/Makefile.in	2008-02-04 10:14:51.000000000 +0100
+@@ -8,11 +8,6 @@
+ distclean:
+ 
+ install:
+-	@for f in $(RCFILES) ; do \
+-	    $(INSTALLCMD) -m 0755 $$f $(RCPATH)/$$f; \
+-	done
+-	/sbin/chkconfig --add powersoftplus
+-	/sbin/chkconfig powersoftplus on
+ 
+ uninstall:
+ 	@/sbin/chkconfig --del powersoftplus
+diff -Nur powersoftplus-0.1.8.orig/src/Makefile.am powersoftplus-0.1.8.chng/src/Makefile.am
+--- powersoftplus-0.1.8.orig/src/Makefile.am	2006-08-27 00:00:00.000000000 +0200
++++ powersoftplus-0.1.8.chng/src/Makefile.am	2008-02-04 09:48:44.000000000 +0100
+@@ -10,7 +10,7 @@
+ 		common.cpp conf.cpp cshmem.cpp csnmp.cpp duopro.cpp ecoprocds.cpp ecopro.cpp \
+ 		glfunc.cpp map.cpp monitor.cpp net3000.cpp net.cpp powersoftplus.cpp sinline.cpp \
+ 		sinlinexl.cpp snmp.cpp ftccomm.cpp sinline_usb.cpp sinlinexl_usb.cpp
+-AM_CXXFLAGS = -pthread -lftd2xx
++AM_CXXFLAGS = -pthread -L$(top_srcdir)/libftdi -lftd2xx
+ noinst_HEADERS = AMMimeUtils.h ccomm.h cemail.h clog.h common.h conf.h cshmem.h \
+ 		csnmp.h duopro.h ecoprocds.h ecopro.h gldefs.h glfunc.h ioctldef.h map.h \
+ 		monitor.h net3000.h netclient.h net.h sinline.h sinlinexl.h snmp.h strings_en.h \
