@@ -1,5 +1,6 @@
 # TODO:
 # - netclient and psmain descriptions
+# - maybe convert *.bmp to *.png
 #
 # Conditional build:
 %bcond_without	qt		# build psmain client (qt-dependent)
@@ -71,6 +72,7 @@ netclient
 %package psmain
 Summary:	psmain
 Group:		X11/Applications
+Requires:	%{name} = %{version}-%{release}
 
 %description psmain
 psmain
