@@ -8,7 +8,7 @@ Summary:	EVER UPS monitoring utilities
 Summary(pl.UTF-8):	Narzędzia do monitorowania zasilaczy awaryjnych UPS firmy EVER
 Name:		powersoftplus
 Version:	0.1.8
-Release:	0.2
+Release:	0.3
 License:	GPL
 Group:		Daemons
 Source0:	http://www.ever.com.pl/pl/pliki/%{name}-%{version}-x86.tar.gz
@@ -16,6 +16,7 @@ Source0:	http://www.ever.com.pl/pl/pliki/%{name}-%{version}-x86.tar.gz
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
 Patch0:		%{name}-make.patch
+Patch1:		%{name}-paths.patch
 URL:		http://www.ever.com.pl/powersoft_prod.php
 BuildRequires:	autoconf
 BuildRequires:	automake
@@ -28,7 +29,7 @@ Requires:	SysVinit
 Requires:	rc-scripts
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
-%define		_sysconfdir	/etc/psplus
+%define		_sysconfdir	/etc/powersoftplus
 
 %description
 This package contains some utilities for EVER UPS monitoring.
@@ -77,6 +78,7 @@ psmain
 %prep
 %setup -q
 %patch0 -p1
+%patch1 -p1
 
 %build
 %{__aclocal}
@@ -87,7 +89,6 @@ psmain
 	--bindir=%{_sbindir} \
 	--prefix=/usr
 
-sed -i -e 's#CONFIG_PATH.*#CONFIG_PATH	"%{_sysconfdir}"#g' config.h
 %{__make} \
 	CC="%{__cc}" \
 	CXX="%{__cxx}" \
