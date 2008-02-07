@@ -101,7 +101,7 @@ qmake
 %{__make} \
 	UIC=/usr/bin/uic \
 	MOC=/usr/bin/moc \
-	CXXFLAGS="%{rpmcxxflags} -I/usr/include/qt/ -DVERSION=%{version}"
+	CXXFLAGS="%{rpmcxxflags} -I/usr/include/qt/ -DHAVE_CONFIG_H"
 %endif
 
 %install
