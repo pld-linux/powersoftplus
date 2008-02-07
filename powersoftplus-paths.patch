@@ -1,0 +1,14 @@
+--- powersoftplus-0.1.8/configure.in.orig	2008-02-07 17:27:21.271745276 +0100
++++ powersoftplus-0.1.8/configure.in	2008-02-07 17:28:22.767518812 +0100
+@@ -11,9 +11,9 @@
+ CFLAGS=${CFLAGS-"-O"}
+ CXXFLAGS=${CXXFLAGS-"-O"}
+ 
+-CONFIG_PATH='/etc/psplus'
++CONFIG_PATH='${sysconfdir}'
+ RC_PATH='/etc/rc.d/init.d'
+-PIX_PATH='${prefix}/share/psplus'
++PIX_PATH='${datadir}/powersoftplus'
+ APP_PATHNAME='${prefix}/bin'
+ SHM_PATHNAME='${prefix}/bin/powersoftplus'
+ 
