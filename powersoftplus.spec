@@ -165,7 +165,6 @@ fi
 %attr(755,root,root) %{_libdir}/*.so*
 %attr(754,root,root) /etc/rc.d/init.d/powersoftplus
 %attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/sysconfig/powersoftplus
-%{_datadir}/%{name}
 %attr(750,root,root) %dir %{_sysconfdir}
 %attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/*.*
 %attr(640,root,root) %ghost /var/log/powersoftplus.log
@@ -178,4 +177,6 @@ fi
 %files psmain
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/psmain
+%dir %{_datadir}/%{name}
+%{_datadir}/%{name}/*.bmp
 %endif
