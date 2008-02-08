@@ -3,8 +3,12 @@
 # - maybe convert *.bmp to *.png (needs paths update in src/*.h)
 #
 # Conditional build:
-%bcond_without	qt		# build psmain client (qt-dependent)
+%bcond_without	qt	# psmain client (qt-dependent)
+%bcond_without	usb	# USB support (relies on x86-only library)
 #
+%ifnarch %{ix86}
+%undefine	with_usb
+%endif
 Summary:	EVER UPS monitoring utilities
 Summary(pl.UTF-8):	Narzędzia do monitorowania zasilaczy awaryjnych UPS firmy EVER
 Name:		powersoftplus
@@ -20,18 +24,17 @@ Patch0:		%{name}-make.patch
 Patch1:		%{name}-paths.patch
 Patch2:		%{name}-types.patch
 Patch3:		%{name}-system-ftd.patch
+Patch4:		%{name}-nousb.patch
 URL:		http://www.ever.com.pl/pl/prod_psp.php
 BuildRequires:	autoconf
 BuildRequires:	automake
-BuildRequires:	libftd2xx-devel >= 0.4.10
+%{?with_usb:BuildRequires:	libftd2xx-devel >= 0.4.10}
 BuildRequires:	libstdc++-devel
-%{?with_qt:BuildRequires:	qmake}
-%{?with_qt:BuildRequires:	qt-devel}
+%{?with_qt:BuildRequires:	qmake >= 6:3.3}
+%{?with_qt:BuildRequires:	qt-devel >= 6:3.3}
 BuildRequires:	sed >= 4.0
 Requires(post,preun):	/sbin/chkconfig
 Requires:	rc-scripts
-# beause of sb's choice to use closed-source ftd library...
-ExclusiveArch:	%{ix86}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		_sysconfdir	/etc/powersoftplus
@@ -95,6 +98,7 @@ dla wybranego typu UPS-a.
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
+%patch4 -p1
 
 %build
 %{__aclocal}
@@ -102,7 +106,8 @@ dla wybranego typu UPS-a.
 %{__autoheader}
 %{__automake}
 %configure \
-	--bindir=%{_sbindir}
+	--bindir=%{_sbindir} \
+	--enable-usb%{!?with_usb:=no}
 
 %{__make}
 
