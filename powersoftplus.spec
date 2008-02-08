@@ -1,5 +1,4 @@
 # TODO:
-# - netclient description
 # - maybe convert *.bmp to *.png (needs paths update in src/*.h)
 #
 # Conditional build:
@@ -69,12 +68,22 @@ Aktualnie obsługiwane typy zasilaczy:
  - Karta SNMP dla Sinline XL (2002 rok)
 
 %package netclient
-Summary:	netclient
+Summary:	PowerSoft Plus network client
+Summary(pl.UTF-8):	Klient sieciowy oprogramowania PowerSoft Plus
 Group:		Daemons
 Requires:	%{name} = %{version}-%{release}
 
 %description netclient
-netclient
+PowerSoft Plus network client allows management of client
+workstations from server. When it's installed on workstation, server
+can notify client about power failures and eventually shutdown
+workstation.
+
+%description netclient -l pl.UTF-8
+Klient sieciowy oprogramowania PowerSoft Plus pozwala na zarządzanie
+stacjami klienckimi z poziomu serwera. Kiedy jest zainstalowany na
+stacji roboczej, serwer może powiadamiać klienta o awariach zasilania
+i w razie potrzeby wyłączyć komputer.
 
 %package psmain
 Summary:	PowerSoft Plus Control Panel
