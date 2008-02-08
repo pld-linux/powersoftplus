@@ -25,6 +25,7 @@ Patch2:		%{name}-types.patch
 Patch3:		%{name}-system-ftd.patch
 Patch4:		%{name}-nousb.patch
 URL:		http://www.ever.com.pl/pl/prod_psp.php
+BuildRequires:	rpmbuild(macros) >= 1.268
 BuildRequires:	autoconf
 BuildRequires:	automake
 %{?with_usb:BuildRequires:	libftd2xx-devel >= 0.4.10}
@@ -157,17 +158,11 @@ rm -rf $RPM_BUILD_ROOT
 
 %post
 /sbin/chkconfig --add powersoftplus
-if [ -f /var/lock/subsys/powersoftplus ]; then
-	/etc/rc.d/init.d/powersoftplus restart >&2
-else
-	echo "Run \"/etc/rc.d/init.d/powersoftplus start\" to start powersoftplus daemon." >&2
-fi
+%service powersoftplus restart
 
 %preun
 if [ "$1" = "0" ]; then
-	if [ -f /var/lock/subsys/powersoftplus ]; then
-		/etc/rc.d/init.d/powersoftplus stop >&2
-	fi
+	%service powersoftplus stop
 	/sbin/chkconfig --del powersoftplus
 fi
 
