@@ -1,0 +1,20 @@
+--- powersoftplus-0.1.8/src/cshmem.cpp.orig	2006-08-27 00:00:00.000000000 +0200
++++ powersoftplus-0.1.8/src/cshmem.cpp	2008-02-07 18:16:19.707778298 +0100
+@@ -82,7 +82,7 @@
+ 	} else {
+ 		isid=true;
+ 		segptr=(char*)shmat(shm_id, NULL, 0);
+-		if((int)segptr==-1) {
++		if(segptr==(char*)-1) {
+ 			//error_report("Shared memory segment couldn't be attached! (%s)\n",strerror(errno));
+ 			return SHM_FAILURE;
+ 		} else
+@@ -122,7 +122,7 @@
+ 	} else {
+ 		isid=isopened=true;
+ 		segptr=(char*)shmat(shm_id, NULL, 0);
+-		if((int)segptr==-1) {
++		if(segptr==(char*)-1) {
+ 			error_report("Shared memory segment couldn't be attached! (%s)\n",strerror(errno));
+ 			return SHM_FAILURE;
+ 		} else
