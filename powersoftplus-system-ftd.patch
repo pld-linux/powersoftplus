@@ -10,7 +10,7 @@
  		common.cpp conf.cpp cshmem.cpp csnmp.cpp duopro.cpp ecoprocds.cpp ecopro.cpp \
  		glfunc.cpp map.cpp monitor.cpp net3000.cpp net.cpp powersoftplus.cpp sinline.cpp \
  		sinlinexl.cpp snmp.cpp ftccomm.cpp sinline_usb.cpp sinlinexl_usb.cpp
--AM_CXXFLAGS = -pthread -L$(top_srcdir)/libftdi -lftd2xx
+-AM_CXXFLAGS = -pthread -lftd2xx
 +AM_CXXFLAGS = -pthread
  noinst_HEADERS = AMMimeUtils.h ccomm.h cemail.h clog.h common.h conf.h cshmem.h \
  		csnmp.h duopro.h ecoprocds.h ecopro.h gldefs.h glfunc.h ioctldef.h map.h \
