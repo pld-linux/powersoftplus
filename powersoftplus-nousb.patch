@@ -93,8 +93,8 @@
 +	 fi], [usb=auto])
 +
 +if test "$usb" = "auto" ; then
-+	case $target_cpu in
-+	  i.86)
++	case $host_cpu in
++	  i?86)
 +		usb=yes
 +		;;
 +	  *)
