@@ -1,0 +1,36 @@
+--- powersoftplus-0.1.8/src/Makefile.am.orig	2008-02-07 18:09:22.361100000 +0100
++++ powersoftplus-0.1.8/src/Makefile.am	2008-02-07 21:13:04.111139672 +0100
+@@ -5,12 +5,12 @@
+ INCLUDES = $(all_includes)
+ 
+ # the library search path.
+-powersoftplus_LDFLAGS = $(all_libraries) 
++powersoftplus_LDADD = $(all_libraries) -lftd2xx
+ powersoftplus_SOURCES = AMMimeUtils.cpp ccomm.cpp cemail.cpp clog.cpp \
+ 		common.cpp conf.cpp cshmem.cpp csnmp.cpp duopro.cpp ecoprocds.cpp ecopro.cpp \
+ 		glfunc.cpp map.cpp monitor.cpp net3000.cpp net.cpp powersoftplus.cpp sinline.cpp \
+ 		sinlinexl.cpp snmp.cpp ftccomm.cpp sinline_usb.cpp sinlinexl_usb.cpp
+-AM_CXXFLAGS = -pthread -L$(top_srcdir)/libftdi -lftd2xx
++AM_CXXFLAGS = -pthread
+ noinst_HEADERS = AMMimeUtils.h ccomm.h cemail.h clog.h common.h conf.h cshmem.h \
+ 		csnmp.h duopro.h ecoprocds.h ecopro.h gldefs.h glfunc.h ioctldef.h map.h \
+ 		monitor.h net3000.h netclient.h net.h sinline.h sinlinexl.h snmp.h strings_en.h \
+--- powersoftplus-0.1.8/src/ftccomm.h.orig	2006-08-27 00:00:00.000000000 +0200
++++ powersoftplus-0.1.8/src/ftccomm.h	2008-02-07 21:13:54.990219597 +0100
+@@ -31,7 +31,7 @@
+ #include <errno.h>
+ 
+ #include "ccomm.h"
+-#include "libftdi/ftd2xx.h"
++#include <ftd2xx/ftd2xx.h>
+ 
+ typedef enum _eftcomm_status_
+ {
+--- powersoftplus-0.1.8/Makefile.am.orig	2006-08-27 00:00:00.000000000 +0200
++++ powersoftplus-0.1.8/Makefile.am	2008-02-07 21:10:41.934396241 +0100
+@@ -1,3 +1,3 @@
+-SUBDIRS = libftdi src conf pix scripts
++SUBDIRS = src conf pix scripts
+ AM_CXXFLAGS = -pthread
+-INCLUDES = -I$(top_srcdir)/src -I$(top_srcdir)/libftdi
++INCLUDES = -I$(top_srcdir)/src
