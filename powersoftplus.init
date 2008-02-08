@@ -16,11 +16,7 @@
 # Get service config - may override defaults
 [ -f /etc/sysconfig/powersoftplus ] && . /etc/sysconfig/powersoftplus
 
-RETVAL=0
-# See how we were called.
-case "$1" in
-  start)
-	# Check if the service is already running?
+start() {
 	if [ ! -f /var/lock/subsys/powersoftplus ]; then
 		rm -f /var/run/power.pid
 		msg_starting powersoftplus
@@ -30,10 +26,10 @@ case "$1" in
 	else
 		msg_already_running powersoftplus
 	fi
-	;;
-  stop)
+}
+
+stop() {
 	if [ -f /var/lock/subsys/powersoftplus ]; then
-		# Stop daemons.
 		msg_stopping powersoftplus
 		killproc powersoftplus
 		ipcrm -S 0x78010096 > /dev/null 2>&1
@@ -41,11 +37,36 @@ case "$1" in
 	else
 		msg_not_running powersoftplus
 	fi
+}
+
+condrestart() {
+	if [ -f /var/lock/subsys/powersoftplus ]; then
+		stop
+		start
+	else
+		msg_not_running powersoftplus
+		RETVAL=$1
+	fi
+}
+
+RETVAL=0
+# See how we were called.
+case "$1" in
+  start)
+	start
 	;;
-  restart|force-reload)
-	$0 stop
-	$0 start
-	exit $?
+  stop)
+	stop
+	;;
+  restart)
+	stop
+	start
+	;;
+  try-restart)
+	condrestart 0
+	;;
+  force-reload)
+	condrestart 7
 	;;
   status)
 	status powersoftplus
@@ -53,7 +74,7 @@ case "$1" in
 	exit $?
 	;;
   *)
-	msg_usage "$0 {start|stop|restart|force-reload|status}"
+	msg_usage "$0 {start|stop|restart|try-restart|force-reload|status}"
 	exit 3
 esac
 
