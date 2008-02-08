@@ -31,7 +31,6 @@ BuildRequires:	automake
 BuildRequires:	libstdc++-devel
 %{?with_qt:BuildRequires:	qmake >= 6:3.3}
 %{?with_qt:BuildRequires:	qt-devel >= 6:3.3}
-BuildRequires:	sed >= 4.0
 Requires(post,preun):	/sbin/chkconfig
 Requires:	rc-scripts
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
