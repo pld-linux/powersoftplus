@@ -1,0 +1,120 @@
+--- powersoftplus-0.1.8/src/Makefile.am.orig	2008-02-08 20:42:26.691605000 +0100
++++ powersoftplus-0.1.8/src/Makefile.am	2008-02-08 21:01:11.777251857 +0100
+@@ -5,11 +5,16 @@
+ INCLUDES = $(all_includes)
+ 
+ # the library search path.
+-powersoftplus_LDADD = $(all_libraries) -lftd2xx
++powersoftplus_LDADD = $(all_libraries) $(USBLIB)
++USB_SOURCES = ecoprocds.cpp ftccomm.cpp sinline_usb.cpp sinlinexl_usb.cpp
++EXTRA_DIST = $(USB_SOURCES)
+ powersoftplus_SOURCES = AMMimeUtils.cpp ccomm.cpp cemail.cpp clog.cpp \
+-		common.cpp conf.cpp cshmem.cpp csnmp.cpp duopro.cpp ecoprocds.cpp ecopro.cpp \
++		common.cpp conf.cpp cshmem.cpp csnmp.cpp duopro.cpp ecopro.cpp \
+ 		glfunc.cpp map.cpp monitor.cpp net3000.cpp net.cpp powersoftplus.cpp sinline.cpp \
+-		sinlinexl.cpp snmp.cpp ftccomm.cpp sinline_usb.cpp sinlinexl_usb.cpp
++		sinlinexl.cpp snmp.cpp
++if HAVE_USB
++powersoftplus_SOURCES += $(USB_SOURCES)
++endif
+ AM_CXXFLAGS = -pthread
+ noinst_HEADERS = AMMimeUtils.h ccomm.h cemail.h clog.h common.h conf.h cshmem.h \
+ 		csnmp.h duopro.h ecoprocds.h ecopro.h gldefs.h glfunc.h ioctldef.h map.h \
+--- powersoftplus-0.1.8/src/upsints.h.orig	2006-10-04 09:14:10.000000000 +0200
++++ powersoftplus-0.1.8/src/upsints.h	2008-02-08 21:05:36.523121397 +0100
+@@ -26,14 +26,18 @@
+ 
+ /* SINLINE CDS series - RS232 */
+ #include "sinline.h"
++#ifdef HAVE_USB
+ /* SINLINE CDS series - USB */
+ #include "sinline_usb.h"
++#endif
+ /* SINLINE XL series - RS232 */
+ #include "sinlinexl.h"
++#ifdef HAVE_USB
+ /* SINLINE XL series - USB */
+ #include "sinlinexl_usb.h"
+ /* ECO Pro CDS series - USB-FTDI */
+ #include "ecoprocds.h"
++#endif
+ /* ECO Pro series - RS232 */
+ #include "ecopro.h"
+ /* DUO Pro series - RS232 */
+@@ -57,14 +61,22 @@
+ 	LPFNIOCTL	fnctl;
+ } ups_interface[] = {
+ 	{ "sinlinexl", sinlinexl_ioctl },
++#ifdef HAVE_USB
+ 	{ "sinlinexl_usb", sinlinexlusb_ioctl },
++#endif
+ 	{ "sinlinepro", sinlinexl_ioctl },
++#ifdef HAVE_USB
+ 	{ "sinlinepro_usb", sinlinexlusb_ioctl },
++#endif
+ 	{ "sinline", sinline_ioctl },
++#ifdef HAVE_USB
+ 	{ "sinline_usb", sinlineusb_ioctl },
++#endif
+ 	{ "duopro", duopro_ioctl },
+ 	{ "ecopro", ecopro_ioctl },
++#ifdef HAVE_USB
+ 	{ "ecopro_usb", ecoprocds_ioctl },
++#endif
+ 	{ "net3000", net3k_ioctl },
+ 	{ "netstd", net_ioctl },
+ //	{ "snmpcard", snmp_ioctl },
+--- powersoftplus-0.1.8/conf/Makefile.in.orig	2006-10-04 09:15:34.000000000 +0200
++++ powersoftplus-0.1.8/conf/Makefile.in	2008-02-08 20:45:32.977125579 +0100
+@@ -4,8 +4,10 @@
+ 
+ CONFFILES = psplus.conf psduser.conf psnet.conf \
+ 	    sinline.conf sinlinexl.conf net.conf net3000.conf \
+-	    duopro.conf ecopro.conf ecopro_usb.conf snmp_sinlinexl.conf \
+-	    netcln.conf sinline_usb.conf sinlinexl_usb.conf sinlinepro.conf sinlinepro_usb.conf
++	    duopro.conf ecopro.conf snmp_sinlinexl.conf \
++	    netcln.conf sinlinepro.conf @USBCONFFILES@
++
++USBCONFFILES = ecopro_usb.conf sinline_usb.conf sinlinexl_usb.conf sinlinepro_usb.conf
+ 
+ all:
+ clean:
+--- powersoftplus-0.1.8/configure.in.orig	2008-02-08 20:42:26.678271000 +0100
++++ powersoftplus-0.1.8/configure.in	2008-02-08 20:57:07.106690540 +0100
+@@ -21,6 +21,36 @@
+ AC_PROG_CXX
+ AM_PROG_LIBTOOL
+ 
++AC_ARG_ENABLE(usb,
++	[AS_HELP_STRING([--disable-usb], [disable USB support (default is enabled on x86)])],
++	[usb=$enableval
++	 if test "$usb" != "yes" -a "$usb" != "no" ; then
++		 AC_MSG_ERROR([Invalid --enable-usb value])
++	 fi], [usb=auto])
++
++if test "$usb" = "auto" ; then
++	case $target_cpu in
++	  i.86)
++		usb=yes
++		;;
++	  *)
++		usb=no
++		;;
++	esac
++fi
++
++if test "$usb" = "yes" ; then
++	USBCONFFILES='$(USBCONFFILES)'
++	USBLIB="-lftd2xx"
++	AC_DEFINE(HAVE_USB, 1, [USB support])
++else
++	USBCONFFILES=
++	USBLIB=
++fi
++AC_SUBST(USBCONFFILES)
++AC_SUBST(USBLIB)
++AM_CONDITIONAL(HAVE_USB, test "$usb" = "yes")
++
+ eval tmppath=${CONFIG_PATH}
+ AC_DEFINE_UNQUOTED(CONFIG_PATH, "$tmppath", [Path for config files])
+ eval tmppath=${RC_PATH}
